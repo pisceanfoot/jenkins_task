@@ -1,7 +1,4 @@
-# -*- coding:utf-8 -*-
-from jenkinstask.util import merge
-
-__env_setting = {
+{
     "uat": {
         "jenkins_url": "http://10.20.32.20:8080/jenkins",
         "username": "jenkins_api",
@@ -15,6 +12,3 @@ __env_setting = {
         }]
     }
 }
-
-def load():
-    return __env_setting

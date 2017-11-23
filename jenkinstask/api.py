@@ -2,7 +2,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals, \
     with_statement
 import logging
-import jenkinsapi
 from jenkinsapi.jenkins import Jenkins
 
 logger = logging.getLogger(__name__)
