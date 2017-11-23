@@ -57,6 +57,13 @@ __env_setting = {
 - TEMPLATE - which will use in template name, for this example in uat environment show above, it will use be 'uat_service.xml'. You can find it replace reserved word '%s' in deploy/template_format
 - APP_NAME,GIT_URL and others - will use for replace template xml file, you can define what you want.
 
+Get config from jenkins
+-------------------------------------
+
+```
+python jenkinstask/main.py -c ${name} -e ${ENV}
+```
+
 
 Command
 -------------------------------------
