@@ -52,12 +52,12 @@ def __create_job_in_env(currentEnv, all_module, is_upgrade):
             currentEnv.get('token'))
 
         for module in all_module:
-            if is_upgrade:
-                api.delete_job(module.name)
-
             if not api.has_job(module.name):
                 xml_content = generator(deploy, module)
                 api.create_job(module.name, xml_content)
+            elif is_upgrade:
+                xml_content = generator(deploy, module)
+                api.update_config(module.name, xml_content)
 
 def __get_job_config(name, env_name):
     if not env_name:
