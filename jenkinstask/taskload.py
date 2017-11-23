@@ -2,14 +2,17 @@
 from __future__ import absolute_import, division, print_function, unicode_literals, \
     with_statement
 
+import sys
+import os
 import logging
-import util
-from os.path import dirname, join
 import pkgutil
+
+from os.path import dirname, join
+from jenkinstask import util
 
 logger = logging.getLogger(__name__)
 
-import sys
+work_path = os.environ.get('work_path')
 
 class TaskModule(object):
     def __init__(self, task_name, module):
@@ -38,28 +41,26 @@ class TaskModule(object):
 
 def load(name):
     logger.info('load task name "%s"', name)
-    module_name = 'task.' + name
-
-    module = __safe_loadMoudle(module_name)
-    return TaskModule(name, module)
-
-def __safe_loadMoudle(module_name):
-    if module_name in sys.modules:
-        mymodule = sys.modules[module_name]
+    result = load_all(filter_name=name)
+    if result:
+        return result[0]
     else:
-        __import__(module_name)
-        mymodule = sys.modules[module_name]
+        return None
 
-    return mymodule
-
-def load_all():
+def load_all(filter_name = None):
     logger.info('load all task')
 
-    pwd = dirname(__file__)
-    pwd = join(pwd, 'task')
+    if work_path:
+        pwd = join(work_path, 'task')
+    else:
+        pwd = dirname(__file__)
+        pwd = join(pwd, 'task')
 
     all_module = []
     for importer, package_name, _ in pkgutil.iter_modules([pwd]):
+        if filter_name and package_name != filter_name:
+            continue
+
         try:
             full_package_name = '%s.%s' % (pwd, package_name)
             if full_package_name not in sys.modules:

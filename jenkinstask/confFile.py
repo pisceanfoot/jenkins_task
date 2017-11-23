@@ -6,11 +6,15 @@ import os
 from os.path import dirname, join
 
 logger = logging.getLogger(__name__)
-
+work_path = os.environ.get('work_path')
 
 def generator(deploy, task):
     logger.info('generator xml config for job "%s"', task.name)
-    pwd = join(dirname(__file__), 'template')
+
+    if work_path:
+        pwd = join(work_path, 'template')
+    else:
+        pwd = join(dirname(__file__), 'template')
 
     template_format = deploy['template_format']
     template_name = task.get('TEMPLATE')
