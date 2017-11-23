@@ -3,14 +3,30 @@ from __future__ import absolute_import, division, print_function, unicode_litera
     with_statement
 import logging
 import os
+import json
 from os.path import dirname, join
 
 logger = logging.getLogger(__name__)
+work_path = os.environ.get('work_path')
 
+def loadConfig():
+    file_name = "config/environment.json"
+    if work_path:
+        pwd = join(work_path, file_name)
+    else:
+        pwd = join(dirname(__file__), file_name)
+
+    logger.debug('load config from %s', pwd)
+    with open(pwd) as f:
+        return json.load(f, encoding='utf-8')
 
 def generator(deploy, task):
     logger.info('generator xml config for job "%s"', task.name)
-    pwd = join(dirname(__file__), 'template')
+
+    if work_path:
+        pwd = join(work_path, 'template')
+    else:
+        pwd = join(dirname(__file__), 'template')
 
     template_format = deploy['template_format']
     template_name = task.get('TEMPLATE')
@@ -22,7 +38,6 @@ def generator(deploy, task):
 
     logger.debug('template file path "%s"', file_path)
     return __format_xml(file_path, deploy, task)
-    
 
 def __format_xml(file_path, deploy, task):
     server_name = deploy.get('server_name')
