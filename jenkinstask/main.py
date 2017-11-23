@@ -17,6 +17,9 @@ def main(args):
 
     is_upgrade = args.upgrade
     env = args.env
+    if args.config:
+        __get_job_config(args.config, env)
+        return
 
     if args.name:
         module = taskload.load(args.name)
@@ -56,12 +59,30 @@ def __create_job_in_env(currentEnv, all_module, is_upgrade):
                 xml_content = generator(deploy, module)
                 api.create_job(module.name, xml_content)
 
+def __get_job_config(name, env_name):
+    if not env_name:
+        raise Exception('env name must be set')
+    logger.info('get config in env "%s" for task "%s"', env_name, name)
+
+    all_env = environment.load()
+    currentEnv = all_env[env_name]
+    api = JenkinsApi(currentEnv['jenkins_url'], 
+            currentEnv.get('username'), 
+            currentEnv.get('token'))
+
+    config = api.get_config(name)
+    print('Result ========>>>>>')
+    print(config)
+    print('=========<<<<<<< END')
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-a', '--all', action='store_true', help='run all tasks define in task folder')
     parser.add_argument('-n', '--name', help='run specific task')
     parser.add_argument('-u', '--upgrade', action='store_true', help='upgrade task')
     parser.add_argument('-e', '--env', help='only create specific env')
+    parser.add_argument('-c', '--config', help='get config of specific task')
     parser.add_argument('--debug', action='store_true', help='open debug')
     args = parser.parse_args()
 
@@ -75,7 +96,8 @@ if __name__ == '__main__':
 
     if not args.all and \
         not args.upgrade and \
-        not args.name:
+        not args.name and \
+        not args.config:
         parser.print_help()
     else:
         main(args)

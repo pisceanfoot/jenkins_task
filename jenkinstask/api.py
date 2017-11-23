@@ -29,6 +29,10 @@ class JenkinsApi(object):
         logger.debug('upgrade task "%s", delete it', name)
         self.jenkins.delete_job(name) 
 
+    def get_config(self, name):
+        logger.debug('get task task "%s"', name)
+        return self.jenkins[name].get_config()
+
 
 if __name__ == '__main__':
     test_jenkins = JenkinsApi('http://10.20.32.20:8080/jenkins', 'jenkins_api', 'HCDhcd@123')
