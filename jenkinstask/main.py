@@ -7,8 +7,7 @@ import argparse
 
 from jenkinstask import taskload
 from jenkinstask.api import JenkinsApi
-from jenkinstask.config import environment
-from jenkinstask.confFile import generator
+from jenkinstask.confFile import generator, loadConfig
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +32,7 @@ def main(args):
 def __create_job(all_module, is_upgrade, env_name):
     logger.info('create job')
 
-    all_env = environment.load()
+    all_env = loadConfig()
     if env_name:
         logger.info('specific env "%s"', env_name)
         all_env = {env_name: all_env[env_name]}
@@ -64,7 +63,7 @@ def __get_job_config(name, env_name):
         raise Exception('env name must be set')
     logger.info('get config in env "%s" for task "%s"', env_name, name)
 
-    all_env = environment.load()
+    all_env = loadConfig()
     currentEnv = all_env[env_name]
     api = JenkinsApi(currentEnv['jenkins_url'], 
             currentEnv.get('username'), 
