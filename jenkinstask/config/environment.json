@@ -4,6 +4,7 @@
         "username": "jenkins_api",
         "token": "b627adc132fc3e49db012e752843c67b",
         "deploy": [{
+            "task_name_format": "{0}",
             "template_format": "uat_{0}.xml",
             "server_name": "01",
             "branch_name": "develop",

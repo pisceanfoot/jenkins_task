@@ -21,6 +21,7 @@ Two steps using Jenkins_Task
       "username": "jenkins_api",
       "token": "b627adc132fc3e49db012e752843c67b",
       "deploy": [{
+          "task_name_format": "{0}",          # optional, will use APP_NAME as format parameter
           "template_format": "uat_{0}.xml",   # will look up in folder 'template'
           "server_name": "01",                # optional, will repace ${SERVER_NAME} in template
           "branch_name": "develop",           # optional, will repace ${BRANCH_NAME} in template
@@ -37,6 +38,7 @@ Two steps using Jenkins_Task
 - token - which can be token or user password
 - deploy - Array, so it can create multi task in jenkins with different template file.
 
+  - task_name_format - optional, will use APP_NAME as format parameter
   - template_format - file name format , the program will look up in folder 'jenkinstask/template'
   - server_name - optional, will repace ${SERVER_NAME} in template
   - Branch_name - optional, will repace ${BRANCH_NAME} in template
@@ -86,6 +88,38 @@ Get config from jenkins
 
 ```
 python jenkinstask/main.py -c ${name} -e ${ENV}
+```
+
+More Example
+-------------------------------------
+
+This example will create three tasks in jenkins use different template.
+
+```
+{
+"prd": {
+        "jenkins_url": "http://10.20.32.20:8080/jenkins",
+        "username": "jenkins_api",
+        "token": "c269b8fe92dbbb569cf95b63b13b9d6f",
+        "deploy": [{
+            "template_format": "prd_{0}.xml",
+            "branch_name": "release",
+            "task_parameter": ["GIT_URL"]
+        },{
+            "task_name_format": "Deploy_{0}_03",
+            "template_format": "prd_deploy_{0}.xml",
+            "server_name": "03",
+            "task_parameter": ["PORT", "APP_NAME", 
+                    "SERVICE_FARM", "SERVICE_GROUP", "THEME", "CODE_FOLDER"]
+        },{
+            "task_name_format": "Deploy_{0}_04",
+            "template_format": "prd_deploy_{0}.xml",
+            "server_name": "04",
+            "task_parameter": ["PORT", "APP_NAME", 
+                    "SERVICE_FARM", "SERVICE_GROUP", "THEME", "CODE_FOLDER"]
+        }]
+    }
+}
 ```
 
 

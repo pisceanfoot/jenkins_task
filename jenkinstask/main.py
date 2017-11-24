@@ -53,12 +53,23 @@ def __create_job_in_env(currentEnv, all_module, is_upgrade, workpath):
             currentEnv.get('token'))
 
         for module in all_module:
-            if not api.has_job(module.name):
-                xml_content = generator(deploy, module)
-                api.create_job(module.name, xml_content)
+            task_name = __create_task_name(deploy, module.name)
+
+            if not api.has_job(task_name):
+                xml_content = generator(deploy, module, work_path = workpath)
+                api.create_job(task_name, xml_content)
             elif is_upgrade:
-                xml_content = generator(deploy, module)
-                api.update_config(module.name, xml_content)
+                xml_content = generator(deploy, module, work_path = workpath)
+                api.update_config(task_name, xml_content)
+
+def __create_task_name(deploy, module_name):
+    logger.debug('task name is"%s"', module_name)
+    task_name_format = deploy.get('task_name_format')
+    if task_name_format:
+        module_name = task_name_format.format(module_name)
+        logger.debug('task name changed to "%s"', module_name)
+
+    return module_name
 
 def __get_job_config(name, env_name, workpath):
     if not env_name:
