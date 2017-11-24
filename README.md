@@ -15,19 +15,19 @@ Two steps using Jenkins_Task
 1. change jenkinstask/config/environment.json
 
 ```
-__env_setting = {
-    "uat": {
-        "jenkins_url": "http://10.20.32.20:8080/jenkins",
-        "username": "jenkins_api",
-        "token": "b627adc132fc3e49db012e752843c67b",
-        "deploy": [{
-            "template_format": "uat_{0}.xml",   # will look up in folder 'template'
-            "server_name": "01",                # optional, will repace ${SERVER_NAME} in template
-            "branch_name": "develop",           # optional, will repace ${BRANCH_NAME} in template
-            "task_parameter": ["GIT_URL", "PORT", "APP_NAME", 
-                    "SERVICE_FARM", "SERVICE_GROUP", "THEME"]
-        }]
-    }
+{
+  "uat": {
+      "jenkins_url": "http://10.20.32.20:8080/jenkins",
+      "username": "jenkins_api",
+      "token": "b627adc132fc3e49db012e752843c67b",
+      "deploy": [{
+          "template_format": "uat_{0}.xml",   # will look up in folder 'template'
+          "server_name": "01",                # optional, will repace ${SERVER_NAME} in template
+          "branch_name": "develop",           # optional, will repace ${BRANCH_NAME} in template
+          "task_parameter": ["GIT_URL", "PORT", "APP_NAME", 
+                  "SERVICE_FARM", "SERVICE_GROUP", "THEME"]
+      }]
+  }
 }
 ```
 
@@ -60,7 +60,9 @@ __env_setting = {
 
 
 
-if you don't want to change file directly in this repo, you can create a separated folder, and run with parameter `-w {path}`*
+**if you don't want to change file directly in this repo, you can create a separated folder, and run with parameter `-w ${work_path}` **
+
+
 
 ### folder struct
 
