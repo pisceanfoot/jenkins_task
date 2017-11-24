@@ -12,7 +12,7 @@ And if you want you chang all jenkins config, just simply run `upgrade`.
 Two steps using Jenkins_Task
 --------------------------------------
 
-1. folk this repo and change jenkinstask/config/environment.py
+1. change jenkinstask/config/environment.json
 
 ```
 __env_setting = {
@@ -57,6 +57,28 @@ __env_setting = {
 - TEMPLATE - which will use in template name, for this example in uat environment show above, it will use be 'uat_service.xml'. You can find it replace reserved word '%s' in deploy/template_format
 - APP_NAME,GIT_URL and others - will use for replace template xml file, you can define what you want.
 
+
+
+
+if you don't want to change file directly in this repo, you can create a separated folder, and run with parameter `-w {path}`*
+
+### folder struct
+
+```
+folder--
+  |config
+      |
+      |-------- environment.json
+  |task
+      |
+      |-------- __init__.py
+      |-------- you_task.py
+  |template
+      |
+      |-------- you_template.xml
+```
+
+
 Get config from jenkins
 -------------------------------------
 
@@ -77,11 +99,14 @@ optional arguments:
   -e ENV, --env ENV     only create specific env
   -c CONFIG, --config CONFIG
                         get config of specific task
+  -w WORKPATH, --workpath WORKPATH
+                        set work path
   --debug               open debug
-  ```
-  
+```
+
   for detail please run `python jenkinstask/main.py --help`
-  
+
+
 LICENSE
 ------------------------------------
 This software is licensed under the Apache-2.0 License. See the LICENSE file in the top distribution directory for the full license text.
