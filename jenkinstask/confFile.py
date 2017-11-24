@@ -7,9 +7,8 @@ import json
 from os.path import dirname, join
 
 logger = logging.getLogger(__name__)
-work_path = os.environ.get('work_path')
 
-def loadConfig():
+def loadConfig(work_path = None):
     file_name = "config/environment.json"
     if work_path:
         pwd = join(work_path, file_name)
@@ -20,7 +19,7 @@ def loadConfig():
     with open(pwd) as f:
         return json.load(f, encoding='utf-8')
 
-def generator(deploy, task):
+def generator(deploy, task, work_path = None):
     logger.info('generator xml config for job "%s"', task.name)
 
     if work_path:
