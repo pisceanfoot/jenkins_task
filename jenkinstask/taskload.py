@@ -16,7 +16,7 @@ class TaskModule(object):
     def __init__(self, task_name, module):
         self.task_name = task_name
         self.module = module
-        self.name = self.get("NAME", task_name)
+        self.name = self.get("APP_NAME", task_name)
 
     def __getitem__(self, name):
         return self.get_value(name)
