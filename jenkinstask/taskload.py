@@ -12,8 +12,6 @@ from jenkinstask import util
 
 logger = logging.getLogger(__name__)
 
-work_path = os.environ.get('work_path')
-
 class TaskModule(object):
     def __init__(self, task_name, module):
         self.task_name = task_name
@@ -39,15 +37,15 @@ class TaskModule(object):
         else:
             return None
 
-def load(name):
+def load(name, work_path = None):
     logger.info('load task name "%s"', name)
-    result = load_all(filter_name=name)
+    result = load_all(filter_name=name, work_path = work_path)
     if result:
         return result[0]
     else:
         return None
 
-def load_all(filter_name = None):
+def load_all(filter_name = None, work_path = None):
     logger.info('load all task')
 
     if work_path:
